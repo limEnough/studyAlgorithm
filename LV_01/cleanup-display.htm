@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head></head>
+<body></body>
+<script>
+    /*
+        Question
+        바탕화면 정리 문제
+        https://school.programmers.co.kr/learn/courses/30/lessons/161990
+    */
+
+    /*
+        Answer
+    */
+    function solution(wallpaper) {
+        var answer = [];
+        
+        const horizental = wallpaper[0].length;
+        const vertical = wallpaper.length;
+        
+        // 일치값이 있는 인덱스 담김
+        const horizentalCheckResult = [];
+        const verticalCheckResult = [];
+        
+        wallpaper.forEach((item, index) => {
+            // 가로
+            if (item.indexOf("#") != -1) {
+                let i = -1;
+                while ((i = item.indexOf("#", i + 1)) != -1) {
+                    horizentalCheckResult.push(i);
+                }
+            };
+            
+            // 세로
+            if ( /#/.test(item) ) {
+                verticalCheckResult.push(index);
+            }
+        });
+
+        answer.push(Math.min(...verticalCheckResult), Math.min(...horizentalCheckResult), Math.max(...verticalCheckResult) + 1, Math.max(...horizentalCheckResult) + 1,)
+        return answer;
+    }
+
+    /*
+        Eureka
+    */
+    function solution(wallpaper) {
+        let left = [];
+        let top = [];
+        let right = []
+        let bottom = [];
+        wallpaper.forEach((v,i) => {
+            [...v].forEach((val,ind) => {
+                if(val === "#") {
+                    left.push(i)
+                    top.push(ind)
+                    right.push(i + 1)
+                    bottom.push(ind + 1)
+                }
+            })
+        })
+        return [Math.min(...left), Math.min(...top), Math.max(...right), Math.max(...bottom)]
+    }
+</script>
+</html>
