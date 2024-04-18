@@ -1,0 +1,137 @@
+a<!DOCTYPE html>
+<html lang="ko">
+<head></head>
+<body>
+  <!-- 📌: question -->
+  <!-- ✅: qnswer -->
+  <!-- ❗:아하 포인트 -->
+  <!-- ⚠️: 모르겠다 -->
+
+  <!-- 
+    📌 [문제1] 빈도수 세기
+
+    두 숫자의 애너그램
+    O(N)시간 복잡도를 갖는다.
+   -->
+  <script>
+    /** ✅ 나의 문제풀이 */
+    const sameFrequency = (num1, num2) => {
+      const num1Str = num1.toString();
+      const num2Str = num2.toString();
+
+      if (num1Str.length !== num2Str.length) return false;
+
+      const obj1 = {};
+      const obj2 = {};
+
+      for (let i = 0; i < num1Str.length; i++) {
+        obj1[num1Str[i]] = (parseInt(obj1[num1Str[i]]) || 0) + 1;
+        obj2[num2Str[i]] = (parseInt(obj2[num2Str[i]]) || 0) + 1;
+      }
+
+      for (let key in obj1) {
+        if (obj1[key] !== obj2[key]) return false;
+        else return true;
+      }
+    }
+
+    /** ✅ 선생님의 문제풀이 */
+    const sameFrequencyByTeacher = (num1, num2) => {
+      let strNum1 = num1.toString();
+      let strNum2 = num2.toString();
+      if(strNum1.length !== strNum2.length) return false;
+      
+      let countNum1 = {};
+      let countNum2 = {};
+      
+      for(let i = 0; i < strNum1.length; i++){
+        countNum1[strNum1[i]] = (countNum1[strNum1[i]] || 0) + 1
+      }
+      
+      for(let j = 0; j < strNum1.length; j++){
+        countNum2[strNum2[j]] = (countNum2[strNum2[j]] || 0) + 1
+      }
+      
+      for(let key in countNum1){
+        if(countNum1[key] !== countNum2[key]) return false;
+      }
+    
+      return true;
+    }
+  </script>
+
+  <!-- 
+    📌 [문제2] 빈도수 세기 / 다중포인터
+
+    가변적인 수의 인수를 받아들이고, 전달된 인자 중 중복이 있는지 확인한다.
+    O(N)시간 복잡도, O(n)의 공간복잡도를 갖는다.
+   -->
+  <script>
+    /** ✅ 나의 문제풀이 */
+     const areThereDuplicates = (...args) => {
+      /**
+       * NOTI: 가변적인 인수는 ...args로 받아 사용하거나, 매개변수 없이 함수내에서 arguments로 지정하여 사용한다.
+       * 해당 값은 0부터 들어오는 index가 key가 되고, 값은 전달받은 인수인 object로 들어온다.
+       * */
+      if (!args?.length || args.length < 2) return false;
+
+      // 배열 만들고 문자 정렬 후 숫자 정렬
+      // ❗배열 만들지 않아도 됐구나 유사배열인 객체이니까!
+      let sortedArr = Object.values(args).sort().sort((a,b) => a-b);
+
+      let i = 0;
+
+      for (let j = 1; j < sortedArr.length; j++) {
+        if (sortedArr[i] === sortedArr[j]) return true;
+        else i++;
+      }
+
+      return false;
+    }
+
+    /** ✅ 선생님의 문제풀이 - 빈도수 세기 */
+    const areThereDuplicatesByTeacher1 = () => {
+      let collection = {}
+      
+      for(let val in arguments){
+        collection[arguments[val]] = (collection[arguments[val]] || 0) + 1
+      }
+
+      for(let key in collection){
+        if(collection[key] > 1) return true
+      }
+      
+      return false;
+    }
+    
+    /** ✅ 선생님의 문제풀이 - 다중 포인터 */
+    const areThereDuplicatesByTeacher2 = (...args) => {
+      // ⚠️ 리턴 조건문 a > b 이건 도저히 이해가 안되는데..
+      args.sort((a,b) => a > b);
+
+      let start = 0;
+      let next = 1;
+
+      while(next < args.length){
+        if(args[start] === args[next]){
+            return true
+        }
+        start++
+        next++
+      }
+
+      return false
+    }
+
+    /** ✅ 선생님의 문제풀이 - 한 줄 솔루션 */
+    const areThereDuplicatesByTeacher3 = () => {
+      /**
+       * NOTI: new Set 을 사용하면 value값만을 저장하며 중복을 허용하지 않는 컬렉션을 만들 수 있다.
+       * value 값으로 고유한 값을 가질 수 있고, 중복값을 제거할 수 있다.
+       * value 값으로 같은 객체가 들어올 경우에는 중복 값으로 인지하지 않는다.
+       * */
+      return new Set(arguments).size !== arguments.length;
+    }
+  </script>
+</body>
+</html>
